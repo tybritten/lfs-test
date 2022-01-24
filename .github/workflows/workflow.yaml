@@ -12,6 +12,12 @@ jobs:
     - uses: actions/checkout@master
       with:
         lfs: true
+    - uses: pachyderm/pachyderm-actions/pachctl-action@master
+      env:
+        PACHYDERM_TOKEN: ${{ secrets.PACHYDERM_TOKEN }}
+        PACHYDERM_CLUSTER_URL: ${{ secrets.PACHYDERM_CLUSTER_URL }}
+        VERSION: 2.0.6
+        COMMAND: "start commit gha-sync-test@master"
     - uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read --follow-symlinks --delete
@@ -21,3 +27,9 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.PACHYDERM_TOKEN }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.PACHYDERM_TOKEN }}
         SOURCE_DIR: 'files'
+    - uses: pachyderm/pachyderm-actions/pachctl-action@master
+      env:
+        PACHYDERM_TOKEN: ${{ secrets.PACHYDERM_TOKEN }}
+        PACHYDERM_CLUSTER_URL: ${{ secrets.PACHYDERM_CLUSTER_URL }}
+        VERSION: 2.0.6
+        COMMAND: "finish commit gha-sync-test@master"
